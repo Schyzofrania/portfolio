@@ -1,3 +1,57 @@
 body {
+    background-color: black;
+}
+
+h1{
+    text-align: center;
+    margin-top: 35px;
+    color: blanchedalmond;
+}
+.card{
+    width: 60%;
+    height: 35%;
+    border-radius: 2px;
+    border: black;
     background-color: lightgray;
+    margin-left: 20%;
+    margin-bottom: 2%;
+    border-radius: 5%;
+}
+.card2{
+    display: flex;
+    justify-content: space-around;
+    height: 25%;
+}
+p{
+    text-align: center;
+    color: white;
+}
+.card > p{
+    color: black;
+}
+label{
+    color: white;
+}
+th{
+    color: white;
+}
+td{
+    color: white;
+}
+a{
+    color: white;
+}
+.connexion{
+    width: 33%;
+    height: 30%;
+    margin-left: 33%;
+}
+.btn{
+    margin-left: 30%;
+    margin-top: 3%;
+}
+.edit{
+    width: 350px;
+    height: 300px;
+    display: flex;
 }
