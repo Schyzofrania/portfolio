@@ -8,9 +8,8 @@
     <table class="table">
         <thead>
             <tr>
-                <th>Id</th>
-                <th>Description</th>
                 <th>Titre</th>
+                <th>Description</th>
                 <th>Clients</th>
                 <th>actions</th>
             </tr>
@@ -18,9 +17,8 @@
         <tbody>
         {% for projet in projets %}
             <tr>
-                <td>{{ projet.id }}</td>
-                <td>{{ projet.description }}</td>
                 <td>{{ projet.titre }}</td>
+                <td>{{ projet.description }}</td>
                 <td>{{ projet.clients }}</td>
                 <td>
                     <a href="{{ path('projets_show', {'id': projet.id}) }}">show</a>
