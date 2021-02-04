@@ -2,13 +2,15 @@
 
 namespace App\Controller;
 
+use App\Entity\Image;
 use App\Entity\Projets;
 use App\Form\ProjetsType;
 use App\Repository\ProjetsRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * @Route("/projets")
@@ -35,6 +37,19 @@ class ProjetsController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $images = $form->get('images')->getData();
+            foreach($images as $image){
+                $fichier = md5(uniqid()) . '.' . $image->guessExtension();
+                $image->move(
+                    $this->getParameter('images_directory'),
+                    $fichier
+                );
+
+                $img = new Image();
+                $img->setName($fichier);
+                $projet->addImage($img);
+            }
+
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($projet);
             $entityManager->flush();
@@ -67,6 +82,18 @@ class ProjetsController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $images = $form->get('images')->getData();
+            foreach($images as $image){
+                $fichier = md5(uniqid()) . '.' . $image->guessExtension();
+                $image->move(
+                    $this->getParameter('images_directory'),
+                    $fichier
+                );
+
+                $img = new Image();
+                $img->setName($fichier);
+                $projet->addImage($img);
+            }
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('projets_index');
@@ -90,5 +117,24 @@ class ProjetsController extends AbstractController
         }
 
         return $this->redirectToRoute('projets_index');
+    }
+
+    /**
+     * @Route("/delete/image/{id}", name="delete_image", methods={"delete"})
+     */
+    public function deleteImage(Image $image, Request $request){
+        $data =JSON_decode($request->getContent(), true);
+        if($this->isCsrfTokenValid('delete'.$image->getId(), $data['_token'])){
+            $nom = $image->getName();
+            unlink($this->getParameter('images_directory') . '/' . $nom);
+
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($image);
+            $em->flush();
+
+            return new JsonResponse(['success' => 1]);
+        }else{
+            return new JsonResponse(['error' => 'Token Invalide'], 400);
+        }
     }
 }
