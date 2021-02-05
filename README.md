@@ -18,3 +18,5 @@ Pour Initialiser le projet :
 - symfony console server:start
 
 ![alt text](https://zupimages.net/up/21/05/bczc.png)
+
+![alt text](https://zupimages.net/viewer.php?id=21/05/7f9t.png)
